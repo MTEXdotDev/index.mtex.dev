@@ -4,7 +4,7 @@ $domains = $config['domains'];
 $version = $config['version'];
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-if ($requetsUri === '/json' || $requestUri === '/json/' || $requestUri === '/index.php/json' || $requestUri === '/index.php/json/' || (isset($_GET['format']) && $_GET['format'] === 'json') || (isset($_GET['output']) && $_GET['output'] === 'json')) {
+if ($requetsUri === '/json' || $requestUri === '/json/' || $requestUri === '/index.php/json' || $requestUri === '/index.php/json/' || (isset($_GET['format']) && $_GET['format'] === 'json') || (isset($_GET['output']) && $_GET['output'] === 'json') || (isset($_GET['type']) && $_GET['type'] === 'json') || (isset($_GET['type']) && $_GET['type'] === 'raw')) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         'version' => $version,
@@ -13,6 +13,7 @@ if ($requetsUri === '/json' || $requestUri === '/json/' || $requestUri === '/ind
     exit;
 }
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,19 +23,29 @@ if ($requetsUri === '/json' || $requestUri === '/json/' || $requestUri === '/ind
     <meta name="author" content="MTEX.dev">
 
     <meta property="og:image" content="https://github.com/MTEXdotDev.png">
-
     <meta property="twitter:image" content="https://github.com/MTEXdotDev.png">
 
     <link rel="icon" type="image/x-icon" href="https://github.com/MTEXdotDev.png">
     <link rel="apple-touch-icon" href="https://github.com/MTEXdotDev.png">
+    <link rel="stylesheet" href="style.css">
     <title>MTEX.dev // Domain Directory</title>
 </head>
-<body>
-    <p>MTEX.dev Domain Directory - Version <?php echo htmlspecialchars(string: $version); ?></p>
-    <ul>
-        <?php foreach ($domains as $domain): ?>
-            <li><?php echo htmlspecialchars($domain); ?></li>
-        <?php endforeach; ?>
-    </ul>
+<body class="site-wrapper">
+    <header class="header">
+        <img src="https://github.com/MTEXdotDev.png" alt="Logo" class="logo">
+        <p class="version-info">
+            MTEX.dev Domain Directory - <span class="version-tag">v<?php echo htmlspecialchars($version); ?></span>
+        </p>
+    </header>
+
+    <main class="content">
+        <ul class="domain-list">
+            <?php foreach ($domains as $domain): ?>
+                <li class="domain-item">
+                    <code class="domain-name"><?php echo htmlspecialchars($domain); ?></code>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </main>
 </body>
 </html>
