@@ -70,6 +70,8 @@ if ($requestUri === '/json' || $requestUri === '/json/' || $requestUri === '/ind
                 <a href="https://legal.mtex.dev/privacy" class="footer-link">Privacy</a>
                 <span class="dot">•</span>
                 <a href="https://status.mtex.dev" class="footer-link">Status</a>
+                <span class="dot">•</span>
+                <a href="https://github.mtex.dev" class="footer-link">GitHub</a>
             </nav>
 
             <div class="footer-info">
