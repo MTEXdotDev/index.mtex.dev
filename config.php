@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'version' => '2.2.2',
+    'version' => '2.2.3',
 
     'domains' => [
         'mtex.dev',

@@ -25,7 +25,7 @@ if ($requestUri === '/json' || $requestUri === '/json/' || $requestUri === '/ind
     <meta property="og:image" content="https://github.com/MTEXdotDev.png">
     <meta property="twitter:image" content="https://github.com/MTEXdotDev.png">
 
-    <link rel="icon" type="image/x-icon" href="https://github.com/MTEXdotDev.png">
+    <link rel="icon" type="image/png" href="http://github.com/MTEXdotDev.png" />
     <link rel="apple-touch-icon" href="https://github.com/MTEXdotDev.png">
     <link rel="stylesheet" href="style.css">
     <title>MTEX.dev // Domain Directory</title>
