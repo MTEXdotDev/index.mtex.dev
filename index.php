@@ -4,12 +4,63 @@ $domains = $config['domains'];
 $version = $config['version'];
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-if ($requestUri === '/json' || $requestUri === '/json/' || $requestUri === '/index.php/json' || $requestUri === '/index.php/json/' || (isset($_GET['format']) && $_GET['format'] === 'json') || (isset($_GET['output']) && $_GET['output'] === 'json') || (isset($_GET['type']) && $_GET['type'] === 'json') || (isset($_GET['type']) && $_GET['type'] === 'raw')) {
+$scriptName = $_SERVER['SCRIPT_NAME'];
+$path = str_replace($scriptName, '', $requestUri);
+$path = trim($path, '/');
+$parts = explode('/', $path);
+
+$isLegacyJson = in_array($path, ['json', 'index.php/json']) || (isset($_GET['format']) && $_GET['format'] === 'json') || (isset($_GET['output']) && $_GET['output'] === 'json') || (isset($_GET['type']) && ($_GET['type'] === 'json' || $_GET['type'] === 'raw'));
+
+if ($isLegacyJson) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         'version' => $version,
         'domains' => $domains,
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (isset($parts[0]) && $parts[0] === 'api') {
+    header('Content-Type: application/json; charset=utf-8');
+    
+    $action = $parts[1] ?? null;
+
+    switch ($action) {
+        case 'domains':
+            echo json_encode([
+                'status' => 'success',
+                'version' => $version,
+                'domains' => $domains
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            break;
+
+        case 'check':
+            $targetDomain = $parts[2] ?? null;
+            if (!$targetDomain) {
+                http_response_code(400);
+                echo json_encode(['error' => 'No domain specified. Usage: /api/check/example.com']);
+            } else {
+                $exists = in_array($targetDomain, $domains);
+                echo json_encode([
+                    'domain' => $targetDomain,
+                    'exists' => $exists,
+                    'message' => $exists ? 'Domain is registered.' : 'Domain not found.'
+                ], JSON_PRETTY_PRINT);
+            }
+            break;
+
+        default:
+            echo json_encode([
+                'message' => 'index.MTEX.dev API',
+                'version' => $version,
+                'available_functions' => [
+                    '/api/domains' => 'Returns a list of all registered domains.',
+                    '/api/check/{domain}' => 'Checks if a specific domain exists in the directory.',
+                    '/json' => 'Legacy endpoint for domain manifest.'
+                ]
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            break;
+    }
     exit;
 }
 ?>

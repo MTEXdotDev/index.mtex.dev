@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'version' => '2.2.3',
+    'version' => '3.0.0',
 
     'domains' => [
         'mtex.dev',
@@ -12,6 +12,9 @@ return [
         'diff.mtex.dev',
         'github.mtex.dev',
         'index.mtex.dev',
+        'gh.mtex.dev',
+        
+        //'go.mtex.dev',
 
         'gimy.site',
         'getmy.name',
